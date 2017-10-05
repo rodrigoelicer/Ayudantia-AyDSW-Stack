@@ -8,4 +8,20 @@ router.get('/', (req, res) => {
   res.send('api works');
 });
 
+var mysql      = require('mysql');
+var connection = mysql.createConnection({
+  host     : 'localhost',
+  user     : 'root',
+  password : '1234'
+});
+
+connection.connect();
+
+connection.query('SELECT * FROM test.usuarios', function(err, rows, fields) {
+  if (err) throw err;
+  console.log(rows);
+});
+
+connection.end();
+
 module.exports = router;

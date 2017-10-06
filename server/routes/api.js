@@ -1,12 +1,6 @@
-// Fuente: https://scotch.io/tutorials/mean-app-with-angular-2-and-the-angular-cli
-
 const express = require('express');
 const router = express.Router();
-
-/* GET api listing. */
-router.get('/', (req, res) => {
-  res.send('api works');
-});
+var app = express();
 
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
@@ -15,13 +9,20 @@ var connection = mysql.createConnection({
   password : '1234'
 });
 
-connection.connect();
-
-connection.query('SELECT * FROM test.usuarios', function(err, rows, fields) {
-  if (err) throw err;
-  console.log(rows);
+connection.connect(function() {
+	console.log("Database connected");
 });
 
-connection.end();
+router.get('/', (req, res) => {
+	var Query = "SELECT * from test.usuarios";
+  	connection.query(Query, function(err, rows){
+    if(err){
+      res.status(400).send("Error");
+    }
+    else{
+      return res.send(rows);
+    }
+  	});
+});
 
 module.exports = router;
